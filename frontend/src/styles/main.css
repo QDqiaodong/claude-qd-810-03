@@ -1,0 +1,429 @@
+:root {
+  --dc-brown: #3e2723;
+  --dc-brown-2: #5d4037;
+  --dc-brown-3: #8d6e63;
+  --dc-paper: #f3ece0;
+  --dc-paper-2: #e8dfcd;
+  --dc-line: #d3c6ad;
+  --dc-ink: #2e211c;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #app {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  color: var(--dc-ink);
+  background-color: var(--dc-paper);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(62, 39, 35, 0.05) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, rgba(62, 39, 35, 0.05) 0 1px, transparent 1px 24px);
+}
+
+/* ---------- 外壳 ---------- */
+.dc-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.dc-topbar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 20px;
+  background: var(--dc-brown);
+  color: #f3ece0;
+  border-bottom: 4px double #b79b76;
+}
+
+.dc-brand-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  background: #f3ece0;
+  color: var(--dc-brown);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: -1px;
+}
+
+.dc-brand-title { font-size: 17px; font-weight: 700; letter-spacing: 1px; }
+.dc-brand-sub { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+
+.dc-tabs { display: flex; gap: 6px; margin-left: auto; }
+
+.dc-tab {
+  padding: 7px 16px;
+  border-radius: 3px 3px 0 0;
+  font-size: 13px;
+  cursor: pointer;
+  color: #e8dfcd;
+  border: 1px solid transparent;
+  border-bottom: none;
+  white-space: nowrap;
+}
+
+.dc-tab .dc-tab-idx { font-size: 11px; opacity: 0.6; margin-right: 5px; }
+
+.dc-tab.active {
+  background: var(--dc-paper);
+  color: var(--dc-brown);
+  font-weight: 700;
+  border-color: #b79b76;
+}
+
+.dc-body { flex: 1; display: flex; min-height: 0; }
+
+.dc-main {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  padding: 16px 18px;
+}
+
+/* ---------- 右侧常驻详情面板 ---------- */
+.dc-detail {
+  width: 330px;
+  flex: none;
+  border-left: 3px double var(--dc-brown-3);
+  background: #fbf7ee;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.dc-detail-head {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--dc-line);
+  background: var(--dc-paper-2);
+}
+
+.dc-detail-title { font-size: 15px; font-weight: 700; color: var(--dc-brown); }
+.dc-detail-sub { font-size: 12px; color: #7b6a58; margin-top: 3px; }
+
+.dc-detail-tag {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 1px 8px;
+  font-size: 11px;
+  border: 1px solid var(--dc-brown-3);
+  color: var(--dc-brown-2);
+  border-radius: 2px;
+}
+
+.dc-detail-body { flex: 1; overflow: auto; padding: 12px 14px; }
+
+.dc-field {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px 0;
+  border-bottom: 1px dotted var(--dc-line);
+  font-size: 12px;
+}
+
+.dc-field-label { color: #8a7761; flex: none; }
+.dc-field-value { text-align: right; font-variant-numeric: tabular-nums; word-break: break-all; }
+
+.dc-json-box { margin-top: 12px; }
+.dc-json-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--dc-brown-2);
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+
+.dc-json-pre {
+  background: #fffdf7;
+  border: 1px solid var(--dc-line);
+  border-radius: 3px;
+  padding: 8px;
+  font-size: 11px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  max-height: 240px;
+  overflow: auto;
+  font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+.dc-empty {
+  color: #a2957f;
+  font-size: 12px;
+  text-align: center;
+  padding-top: 60px;
+  line-height: 2;
+}
+
+/* ---------- 页面通用 ---------- */
+.dc-page { display: flex; flex-direction: column; gap: 12px; }
+
+.dc-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--dc-line);
+  border-radius: 3px;
+  padding: 8px 12px;
+}
+
+.dc-label { font-size: 12px; color: #8a7761; letter-spacing: 1px; }
+
+.dc-panel {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--dc-line);
+  border-radius: 3px;
+  padding: 12px;
+}
+
+.dc-panel-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--dc-brown);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+  border-left: 4px solid var(--dc-brown);
+  padding-left: 8px;
+}
+
+.dc-split { display: flex; gap: 14px; align-items: flex-start; flex-wrap: wrap; }
+.dc-svg { background: #fffdf7; border: 1px solid var(--dc-line); border-radius: 3px; }
+
+.dc-hole-label { font-size: 10px; fill: #6d5b48; }
+
+/* ---------- 孔位 ---------- */
+.dc-stats { display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto; }
+
+.dc-stat {
+  border: 1px solid var(--dc-line);
+  background: #fffdf7;
+  border-radius: 3px;
+  padding: 4px 10px;
+  cursor: pointer;
+  min-width: 132px;
+}
+
+.dc-stat.on { border-color: var(--dc-brown); box-shadow: 0 0 0 2px rgba(62, 39, 35, 0.12); }
+.dc-stat-name { font-size: 12px; font-weight: 700; color: var(--dc-brown-2); }
+.dc-stat-num { font-size: 11px; color: #8a7761; margin-top: 2px; font-variant-numeric: tabular-nums; }
+
+/* ---------- 岩芯柱 ---------- */
+.dc-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+
+.dc-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #6d5b48;
+}
+
+.dc-legend-swatch { width: 16px; height: 12px; border: 1px solid #7b6a58; border-radius: 2px; }
+
+.dc-stack { display: flex; height: 22px; border: 1px solid var(--dc-line); border-radius: 3px; overflow: hidden; }
+.dc-stack-seg { display: flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; overflow: hidden; }
+
+.dc-warn-list { display: flex; flex-direction: column; gap: 6px; }
+
+.dc-warn {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  background: #fff3ec;
+  border: 1px solid #e2b59a;
+  border-left: 4px solid #c05621;
+  border-radius: 3px;
+  padding: 5px 8px;
+  cursor: pointer;
+}
+
+.dc-round-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 12px;
+  padding: 5px 8px;
+  border-bottom: 1px dotted var(--dc-line);
+  cursor: pointer;
+}
+
+.dc-round-row:hover { background: rgba(62, 39, 35, 0.06); }
+.dc-round-row.on { background: rgba(62, 39, 35, 0.12); font-weight: 700; }
+
+.dc-hole-handover-btn { margin-left: auto; font-weight: 400; }
+
+/* ---------- 钻机 ---------- */
+.dc-rig-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+
+.dc-rig-card {
+  background: #fffdf7;
+  border: 1px solid var(--dc-line);
+  border-left: 5px solid var(--dc-brown-3);
+  border-radius: 3px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.dc-rig-card.on { box-shadow: 0 0 0 2px rgba(62, 39, 35, 0.18); border-left-color: var(--dc-brown); }
+.dc-rig-code { font-size: 14px; font-weight: 700; color: var(--dc-brown); }
+.dc-rig-model { font-size: 11px; color: #8a7761; margin-top: 2px; }
+.dc-rig-meta { font-size: 11px; color: #6d5b48; margin-top: 6px; line-height: 1.7; }
+
+.dc-eff-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 12px; }
+.dc-eff-name { width: 96px; flex: none; color: var(--dc-brown-2); }
+.dc-eff-bar { flex: 1; height: 14px; background: var(--dc-paper-2); border: 1px solid var(--dc-line); border-radius: 2px; overflow: hidden; }
+.dc-eff-fill { height: 100%; background: linear-gradient(90deg, #8d6e63, #3e2723); }
+.dc-eff-num { width: 130px; flex: none; text-align: right; font-variant-numeric: tabular-nums; color: #6d5b48; }
+
+/* ---------- 班报（打印） ---------- */
+.dc-sheet {
+  background: #fff;
+  border: 1px solid #8a7761;
+  padding: 18px 20px;
+  max-width: 860px;
+  font-family: "Songti SC", "SimSun", serif;
+  color: #221913;
+}
+
+.dc-sheet-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  border-bottom: 3px double #221913;
+  padding-bottom: 8px;
+}
+
+.dc-sheet-sub { text-align: center; font-size: 12px; margin: 6px 0 12px; color: #55463c; }
+
+.dc-sheet table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.dc-sheet th, .dc-sheet td { border: 1px solid #221913; padding: 5px 8px; }
+.dc-sheet th { background: #f0e9dc; text-align: left; width: 108px; font-weight: 500; }
+
+.dc-sheet-sign { display: flex; justify-content: space-between; margin-top: 26px; font-size: 13px; }
+
+@media print {
+  body { background: #fff; }
+  .dc-topbar, .dc-detail, .dc-toolbar, .dc-form-panel, .dc-noprint { display: none !important; }
+  .dc-main { overflow: visible; padding: 0; }
+  .dc-sheet { border: none; max-width: none; }
+}
+
+/* ---------- 终孔交接台 ---------- */
+.dc-lock-alert { margin-bottom: 4px; }
+
+.dc-return-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff3ec;
+  border: 1px solid #e2b59a;
+  border-left: 4px solid #c05621;
+  border-radius: 3px;
+  padding: 6px 12px;
+  margin-bottom: 12px;
+}
+
+.dc-return-hint { font-size: 12px; color: #8a7761; }
+
+.nav-hit {
+  background: #fff3ec !important;
+  box-shadow: inset 3px 0 0 #c05621;
+}
+
+.dc-reject-box {
+  margin: 8px 0;
+  padding: 7px 10px;
+  font-size: 12px;
+  color: #9c3a12;
+  background: #fff3ec;
+  border: 1px solid #e2b59a;
+  border-left: 4px solid #c05621;
+  border-radius: 3px;
+}
+
+.dc-issue-group { margin-bottom: 10px; }
+
+.dc-issue-group-head {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--dc-brown-2);
+  padding: 4px 0;
+  border-bottom: 1px solid var(--dc-line);
+}
+
+.dc-issue-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c05621;
+  margin-right: 6px;
+}
+
+.dc-issue-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 7px 8px;
+  border-bottom: 1px dotted var(--dc-line);
+  background: rgba(255, 253, 247, 0.7);
+}
+
+.dc-issue-item.resolved { opacity: 0.62; }
+.dc-issue-item.resolved .dc-issue-msg { text-decoration: line-through; }
+
+.dc-issue-status { flex: none; width: 20px; padding-top: 2px; }
+.dc-warn-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #c05621; margin-top: 4px; }
+
+.dc-issue-body { flex: 1; min-width: 0; }
+.dc-issue-label { font-size: 12px; font-weight: 700; color: var(--dc-brown-2); }
+.dc-issue-msg { font-size: 12px; color: #6d5b48; line-height: 1.6; margin-top: 2px; }
+
+.dc-version-card {
+  border: 1px solid var(--dc-line);
+  background: #fffdf7;
+  border-radius: 3px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+
+.dc-version-card.on { box-shadow: 0 0 0 2px rgba(62, 39, 35, 0.15); }
+
+.dc-snap-block { margin-bottom: 16px; }
+.dc-snap-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--dc-brown);
+  border-left: 4px solid var(--dc-brown);
+  padding-left: 8px;
+  margin-bottom: 8px;
+}
+
+.dc-snap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px 12px;
+  font-size: 12px;
+  color: #5d4037;
+  background: #fffdf7;
+  border: 1px solid var(--dc-line);
+  border-radius: 3px;
+  padding: 8px 10px;
+}
+
+.dc-snap-series {
+  font-size: 12px;
+  padding: 6px 8px;
+  border-bottom: 1px dotted var(--dc-line);
+}
