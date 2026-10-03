@@ -139,19 +139,18 @@
 import { computed, onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { api } from '../api'
-import { setDetail } from '../detail'
+import { useHoleLoader } from '../hole-loader'
 import { openHandoverForHole } from '../handover-nav'
 import { openSamplesForHole } from '../sample-nav'
 
 const mines = ref([])
 const stats = ref([])
-const holes = ref([])
 const mineId = ref(null)
-const selectedId = ref(null)
 const dialog = ref(false)
 const form = ref({})
 
-const selected = computed(() => holes.value.find((h) => h.id === selectedId.value) || null)
+// 孔位加载与选中态同步：矿区切换时最后一次选择唯一生效，列表/平面图/详情保持一致
+const { holes, selectedId, selected, select, loadHoles } = useHoleLoader({ mineId, mines })
 
 const points = computed(() => {
   const list = holes.value
@@ -195,33 +194,6 @@ function statusColor(status) {
   return '#8d6e63'
 }
 
-function mineName(id) {
-  const m = mines.value.find((x) => x.id === id)
-  return m ? m.name : '—'
-}
-
-function select(h) {
-  selectedId.value = h.id
-  setDetail({
-    title: h.holeNo,
-    subtitle: mineName(h.mineId) + ' · 倾角 ' + num(h.dipAngle) + '°',
-    tag: h.status,
-    fields: [
-      { label: '孔号', value: h.holeNo },
-      { label: '所属矿区', value: mineName(h.mineId) },
-      { label: '坐标 X', value: num(h.coordX) },
-      { label: '坐标 Y', value: num(h.coordY) },
-      { label: '设计孔深 (m)', value: num(h.designDepth) },
-      { label: '实际孔深 (m)', value: num(h.actualDepth) },
-      { label: '孔口标高 (m)', value: num(h.collarElev) },
-      { label: '倾角 (°)', value: num(h.dipAngle) },
-      { label: '开孔日期', value: h.spudDate || '—' },
-      { label: '终孔日期', value: h.finalDate || '—' },
-      { label: '状态', value: h.status }
-    ]
-  })
-}
-
 function openCreate() {
   form.value = { mineId: mineId.value, status: '施工', coordX: 0, coordY: 0, designDepth: 300, dipAngle: 90 }
   dialog.value = true
@@ -250,12 +222,9 @@ async function submitCreate() {
 }
 
 async function loadStats() {
-  stats.value = await api.mineStats()
-}
-
-async function loadHoles() {
-  holes.value = await api.boreholes(mineId.value)
-  if (holes.value.length && !selectedId.value) select(holes.value[0])
+  try {
+    stats.value = await api.mineStats()
+  } catch (e) { /* 已提示：统计失败不阻塞孔位加载 */ }
 }
 
 onMounted(async () => {
