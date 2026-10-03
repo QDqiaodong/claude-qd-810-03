@@ -139,7 +139,8 @@
 import { computed, onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { api } from '../api'
-import { setDetail } from '../detail'
+import { clearDetail, setDetail } from '../detail'
+import { createHoleListSync } from '../hole-sync'
 import { openHandoverForHole } from '../handover-nav'
 import { openSamplesForHole } from '../sample-nav'
 
@@ -200,8 +201,7 @@ function mineName(id) {
   return m ? m.name : '—'
 }
 
-function select(h) {
-  selectedId.value = h.id
+function showDetail(h) {
   setDetail({
     title: h.holeNo,
     subtitle: mineName(h.mineId) + ' · 倾角 ' + num(h.dipAngle) + '°',
@@ -220,6 +220,25 @@ function select(h) {
       { label: '状态', value: h.status }
     ]
   })
+}
+
+/**
+ * 矿区切换的孔位同步：最后一次 load 唯一生效。
+ * 慢返回的旧响应（无论成败）一律丢弃；最新请求失败时清空列表与详情，
+ * 保证台账、平面图、详情三处始终同属当前矿区。
+ */
+const holeSync = createHoleListSync({
+  fetchHoles: (id) => api.boreholes(id),
+  onList: (list) => { holes.value = list },
+  onSelect: (h) => { selectedId.value = h.id; showDetail(h) },
+  onClear: () => { selectedId.value = null; clearDetail() }
+})
+
+/** 用户点选（台账行 / 平面图圆点）：立即生效并告知同步器当前选中 */
+function select(h) {
+  holeSync.pick(h)
+  selectedId.value = h.id
+  showDetail(h)
 }
 
 function openCreate() {
@@ -253,15 +272,15 @@ async function loadStats() {
   stats.value = await api.mineStats()
 }
 
-async function loadHoles() {
-  holes.value = await api.boreholes(mineId.value)
-  if (holes.value.length && !selectedId.value) select(holes.value[0])
+/** 触发当前矿区的孔位加载；返回的 Promise 永不 reject（失败已在同步器内处理） */
+function loadHoles() {
+  return holeSync.load(mineId.value)
 }
 
 onMounted(async () => {
   mines.value = await api.mines()
   if (mines.value.length) mineId.value = mines.value[0].id
-  await loadStats()
-  await loadHoles()
+  // 统计与孔位互不阻塞：任一失败不影响另一处加载
+  await Promise.allSettled([loadStats(), loadHoles()])
 })
 </script>
